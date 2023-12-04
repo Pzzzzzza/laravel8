@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\MyProfileController;
+use App\Http\Controllers\QuizController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -70,3 +73,73 @@ Route::get("/gallery/cat", function () {
     $cat = "http://www.onyxtruth.com/wp-content/uploads/2017/06/black-panther-movie-onyx-truth.jpg";
     return view("test/cat", compact("cat"));
 });
+
+Route::get("/teacher" , function (){
+	return view("teacher");
+});
+
+Route::get("/student" , function (){
+	return view("student");
+});
+
+Route::get("/theme" , function (){
+	return view("theme");
+});
+
+// Route Template Component
+Route::get("/teacher/component", function () {
+    return view("teacher-component");
+});
+
+Route::get("/student/component", function () {
+    return view("student-component");
+});
+
+Route::get('/tables', function () {
+    return view('tables');
+});
+
+Route::get("/myprofile/create",[ MyProfileController::class , "create" ]); 
+
+Route::get("/myprofile/{id}/edit", [ MyProfileController::class , "edit" ] );
+
+Route::get("/myprofile/{id}", [ MyProfileController::class , "show" ]);
+
+Route::get( "/coronavirus" ,[ MyProfileController::class , "coronavirus" ] );
+
+Route::get( "/coronavirus" , "MyProfileController@coronavirus" );
+
+// Route::get('study-question', function () {
+//     $questions = json_decode(file_get_contents("https://raw.githubusercontent.com/arc6828/cs/master/json/sci-mbti.json"));    
+//     return view("study/question", compact('questions'));
+// })->name('study-question');
+
+// Route::post('study-match', function (Request $request){
+//     $summary = [ "CS" => 0, "IT" => 0, "DISE" => 0, "HE" => 0, "NU" => 0, "FB" => 0, "SET" => 0, "OHS" => 0 ];
+//     $majors = [
+//         "CS" => "วิทยาการคอมพิวเตอร์ (CS)",
+//         "IT" => "เทคโนโลยีสารสนเทศ (IT)",
+//         "DISE" => "นวัตกรรมดิจิทัลและวิศวกรรมซอฟต์แวร์ (DISE)",
+//         "HE" => "คหกรรมศาสตร์ (HE)",
+//         "NU" => "โภชนาการและการกำหนดอาหาร (NU)",
+//         "FB" => "นวัตกรรมอาหารและเครื่องดื่มเพื่อสุขภาพ (FB)",
+//         "SET" => "วิทยาศาสตร์และเทคโนโลยีสิ่งแวดล้อม (SET)",
+//         "OHS" => "อาชีวอนามัยและความปลอดภัย (OHS)",
+//     ];
+//     foreach ($_POST as $key => $value) {
+//         if(!str_contains($key, "flexRadioDefault")) continue;
+//         [$code, $answer] = explode("-", $value);
+//         if ($answer == "yes") {            // if-yes
+//             $summary[$code] = isset($summary[$code]) ? $summary[$code] + 1 : 1;
+//         } else {            // if-no
+//             $summary[$code] = isset($summary[$code]) ? $summary[$code] + 0 : 0;
+//         }
+//     }
+//     $codes = array_keys($summary);
+//     $values = array_values($summary);
+
+//     return view("study/match", compact('codes','values','majors'));
+// })->name('study-match');
+
+Route::get("study-question", [ QuizController::class, "question" ])->name("study-question");
+Route::post("study-match", [ QuizController::class, "match" ])->name("study-match");
