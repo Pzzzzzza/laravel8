@@ -1,3 +1,4 @@
+
 <!-- this file location is /resources/views/myprofile/show.blade.php  -->
 <h1>Profile : {{ $profile->id }}</h1>
 <div>

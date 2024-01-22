@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\MyProfileController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuizController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+require __DIR__.'/auth.php';
 Route::get('/', function () {
     return view('welcome');
 });
@@ -73,11 +83,12 @@ Route::get("/gallery/cat", function () {
     $cat = "http://www.onyxtruth.com/wp-content/uploads/2017/06/black-panther-movie-onyx-truth.jpg";
     return view("test/cat", compact("cat"));
 });
-
+//week3
+Route::middleware(['auth', 'role:admin,teacher,student'])->group(function () {
 Route::get("/teacher" , function (){
 	return view("teacher");
 });
-
+});
 Route::get("/student" , function (){
 	return view("student");
 });
@@ -143,3 +154,21 @@ Route::get( "/coronavirus" , "MyProfileController@coronavirus" );
 
 Route::get("study-question", [ QuizController::class, "question" ])->name("study-question");
 Route::post("study-match", [ QuizController::class, "match" ])->name("study-match");
+
+Route::get("/product", [ProductController::class, "index"])->name('product.index');
+Route::get("/product/create", [ProductController::class, "create"])->name('product.create');
+Route::post("/product", [ProductController::class, "store"])->name('product.store');
+Route::get('/product/{id}', [ProductController::class, "show"])->name('product.show');
+Route::get("/product/{id}/edit", [ProductController::class, "edit"])->name('product.edit');
+Route::patch("/product/{id}", [ProductController::class, "update"])->name('product.update');
+Route::delete("/product/{id}", [ProductController::class, "destroy"])->name('product.destroy');
+
+// Route::resource('/product', ProductController::class );
+
+Route::resource('/staff', StaffController::class );
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+require __DIR__ . '/auth.php';
